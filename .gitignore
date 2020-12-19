@@ -22,3 +22,6 @@ pkg/
 tags
 tags.*
 log/
+.generators
+.idea/
+.rakeTasks
