@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -36,18 +38,47 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+# Boostrap 4
+gem 'bootstrap', '~> 5.0.0.alpha3'
+
+# Bootstrap JavaScript depends on jQuery.
+gem 'jquery-rails', '~> 4.4'
+
+# RuboCop is a Ruby static code analyzer (a.k.a. linter) and code formatter
+gem 'rubocop', '~> 1.6', '>= 1.6.1', require: false
+
+# This gem provides means of running rubocop including auto-correct on all files which are currently staged in git
+gem 'rubocop_runner', '~> 2.1', require: false
+
+# Nokogiri is an HTML, XML, SAX, and Reader parser.
+gem 'nokogiri', '~> 1.10', '>= 1.10.10'
+
+# Port of arc90's readability project to ruby
+gem 'ruby-readability', '~> 0.7.0'
+
+# Great Ruby dubugging companion: pretty print Ruby objects to visualize their structure
+gem 'awesome_print', '~> 1.8'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # RSpec testing framework
+  gem 'rspec-rails', '~> 4.0.1'
+  # Adds step-by-step debugging and stack navigation capabilities to pry using byebug.
+  gem 'pry-byebug'
 end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # Better Errors replaces the standard Rails error page with a much better and more useful error page
+  gem 'better_errors', '~> 2.9', '>= 2.9.1'
+  # Retrieve the binding of a method's caller. Can also retrieve bindings even further up the stack.
+  gem 'binding_of_caller', '~> 0.8.0'
 end
 
 group :test do
@@ -59,4 +90,4 @@ group :test do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

@@ -4,3 +4,6 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+
+require 'rubocop_runner/rake_task'
+RubocopRunner::RakeTask.new
