@@ -59,6 +59,10 @@ gem 'ruby-readability', '~> 0.7.0'
 # Great Ruby dubugging companion: pretty print Ruby objects to visualize their structure
 gem 'awesome_print', '~> 1.8'
 
+# Haml (HTML Abstraction Markup Language) is a layer on top of HTML or XML t
+gem 'haml', '~> 5.2', '>= 5.2.1'
+gem 'haml-rails', '~> 2.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
