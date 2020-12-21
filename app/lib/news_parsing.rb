@@ -51,21 +51,21 @@ class NewsParsing
             "Failed to fetch article content at #{article_uri}. Response code: #{article_response.code}"
     end
 
-    rbody = filter_article_content(article_response)
-    news_hash = get_news_info(rbody, story_link)
+    article_body = filter_article_content(article_response)
+    news_hash = get_news_info(article_body, story_link)
     best_news << news_hash
   end
 
-  def get_news_info(rbody, story_link)
+  def get_news_info(article_body, story_link)
     {
       title: story_link.text,
-      image_url: rbody.images.first,
-      article_excerpt: "#{rbody.content.strip.first(50)}...".gsub(/\n/, '')
+      image_url: article_body.images.first,
+      article_excerpt: "#{article_body.content.strip.first(50)}...".gsub(/\n/, '')
     }
   end
 
-  def filter_article_content(article_request_response)
-    Readability::Document.new(article_request_response.body,
+  def filter_article_content(article_response)
+    Readability::Document.new(article_response.body,
                               tags: %w[p img],
                               attributes: %w[src href],
                               remove_empty_nodes: true)
