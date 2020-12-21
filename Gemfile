@@ -63,6 +63,9 @@ gem 'awesome_print', '~> 1.8'
 gem 'haml', '~> 5.2', '>= 5.2.1'
 gem 'haml-rails', '~> 2.0'
 
+# FastImage finds the size or type of an image given its uri by fetching as little as needed.
+gem 'fastimage', '~> 2.2'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

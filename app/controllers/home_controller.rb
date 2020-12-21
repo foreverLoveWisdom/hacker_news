@@ -2,5 +2,7 @@
 
 # Handle routing request for Home
 class HomeController < ApplicationController
-  def news; end
+  def news
+    @news_content = NewsParsing.new.parse
+  end
 end
