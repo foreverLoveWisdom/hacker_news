@@ -45,14 +45,14 @@ class NewsParsing
 
   def extract_article_data(best_news, story_link)
     article_uri = URI(story_link.attributes['href'].to_s)
-    article_request_response = Net::HTTP.get_response(article_uri)
-    unless article_request_response.code == '200'
+    article_response = Net::HTTP.get_response(article_uri)
+    unless article_response.code == '200'
       raise StandardError,
-            "Failed to fetch article content. Response code: #{response.code}"
+            "Failed to fetch article content at #{article_uri}. Response code: #{article_response.code}"
     end
 
-    article_body = filter_article_content(article_request_response)
-    news_hash = get_news_info(article_body, story_link)
+    rbody = filter_article_content(article_response)
+    news_hash = get_news_info(rbody, story_link)
     best_news << news_hash
   end
 
