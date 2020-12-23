@@ -1,2 +1,10 @@
 %h1 Home#news
-= debug @news_content
+-# = debug @news_content
+- @news_content.each_with_index do |news_item, index|
+  .article_title
+    = news_item[:title]
+  %div{class: 'article_url', id: "article_url_#{index}"}
+    = news_item[:article_url]
+  .article_image
+  .article_excerpt
+
