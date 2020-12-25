@@ -13,7 +13,7 @@ class NewsParsing
     @failed_stories = 0
     @news_list      = []
   end
-  
+
   def failed_stories
     @failed_stories
   end
@@ -27,43 +27,43 @@ class NewsParsing
       doc         = Nokogiri::HTML(response.body)
       story_links = doc.xpath("//table[1]/tr/td/a[@class='storylink']")
       news_list   = []
+      threads     = []
       begin
         story_links.each do |story_link|
-          next if story_link.include?('medium')
+          threads << Thread.new do
+            next if story_link.include?('medium')
 
-          story_url                = story_link.attributes['href'].to_s
-          meta_url                 = 'https://api.urlmeta.org'
-          meta_result = HTTParty.get(
-            meta_url,
-            headers: {'Authorization' => 'Basic ZG9tYW5odGllbjIwMTFAZ21haWwuY29tOmExVk1vMkdJV0JrcTl0M3dmYWhn'},
-            query: {'url' => story_url}
-          )
+            story_url = story_link.attributes['href'].to_s
+            next if story_url.include?('item')
 
-        meta_result = HTTParty.get(
-            meta_url,
-            headers: {'Authorization' => 'Basic ZG9tYW5odGllbjIwMTFAZ21haWwuY29tOmExVk1vMkdJV0JrcTl0M3dmYWhn'},
-            query: {'url' => story_url}
-          )
+            meta_url    = 'https://api.urlmeta.org'
+            meta_result = HTTParty.get(
+              meta_url,
+              headers: { 'Authorization' => 'Basic ZG9tYW5odGllbjIwMTFAZ21haWwuY29tOmExVk1vMkdJV0JrcTl0M3dmYWhn' },
+              query:   { 'url' => story_url }
+            )
 
-          unless meta_result.dig('result', 'status') == 'OK'
-            raise StandardError, "Failed to get meta data for #{story_url}"
+            unless meta_result.dig('result', 'status') == 'OK'
+              raise StandardError, "Failed to get meta data for #{story_url}"
+            end
+
+            story_hash = {
+              title:         story_link.text,
+              story_image:   meta_result.dig("meta", "image"),
+              story_excerpt: "#{meta_result.dig("meta", "description")}...",
+              story_url:     story_url
+            }
+
+            news_list << story_hash
+          rescue StandardError => e
+            @failed_stories += 1
+            Rails.logger.debug { "Rescued exception: #{e.inspect}" }
+            next
           end
-
-          story_hash = {
-            title:         story_link.text,
-            story_image:   meta_result.dig("meta", "image"),
-            story_excerpt: "#{meta_result.dig("meta", "description")}...",
-            story_url: story_url
-          }
-
-          news_list << story_hash
-        rescue StandardError => e
-          @failed_stories += 1
-          Rails.logger.debug { "Rescued exception: #{e.inspect}" }
-          next
         end
       end
 
+      threads.each(&:join)
       news_list
     rescue StandardError => e
       Rails.logger.debug { "Rescued exception: #{e.inspect}" }
