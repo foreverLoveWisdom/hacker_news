@@ -1,3 +1,15 @@
 %h1 Home#news
 = debug @news.failed_stories
 = debug @news_content
+- @news_content.each do |story|
+  .row
+    .col-sm-3
+      = image_tag(story[:image], class: 'img-thumbnail') if story[:image]
+    .col-sm-9
+      .row
+        %div
+          = story[:title]
+      .row
+        %div
+          = "#{story[:excerpt].split.first(25).join(' ')}..."
+  %hr

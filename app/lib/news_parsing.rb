@@ -25,7 +25,7 @@ class NewsParsing
       raise StandardError, "Failed to fetch page content. Response code: #{response.code}" unless response.code == '200'
 
       doc         = Nokogiri::HTML(response.body)
-      story_links = doc.xpath("//table[1]/tr/td/a[@class='storylink']")
+      story_links = doc.xpath("//table[1]/tr/td/a[@class='storylink']").first(3)
       news_list   = []
       threads     = []
       begin
@@ -49,9 +49,9 @@ class NewsParsing
 
             story_hash = {
               title:         story_link.text,
-              story_image:   meta_result.dig("meta", "image"),
-              story_excerpt: "#{meta_result.dig("meta", "description")}...",
-              story_url:     story_url
+              image:   meta_result.dig("meta", "image"),
+              excerpt: "#{meta_result.dig("meta", "description")}...",
+              url:     story_url
             }
 
             news_list << story_hash
