@@ -47,6 +47,12 @@ gem 'jquery-rails', '~> 4.4'
 # RuboCop is a Ruby static code analyzer (a.k.a. linter) and code formatter
 gem 'rubocop', '~> 1.6', '>= 1.6.1', require: false
 
+# A RuboCop extension focused on enforcing Rails best practices and coding conventions.
+gem 'rubocop-rails', require: false
+
+# RSpec-specific analysis for your projects, as an extension to RuboCop.
+gem 'rubocop-rspec', require: false
+
 # This gem provides means of running rubocop including auto-correct on all files which are currently staged in git
 gem 'rubocop_runner', '~> 2.1', require: false
 
