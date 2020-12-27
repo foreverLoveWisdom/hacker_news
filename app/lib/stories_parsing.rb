@@ -1,28 +1,26 @@
 # frozen_string_literal: true
 
-require 'net/http'
 require 'logger'
 
-# Handle parsing news content
-class NewsParsing
+# Parsing stories content
+class StoriesParsing
   attr_reader :url, :failed_stories, :stories
 
   HACKER_NEWS = 'https://news.ycombinator.com/best'
 
   def initialize(url = HACKER_NEWS)
-    @url = url
+    @url            = url
     @failed_stories = 0
-    @stories = []
-    @threads = []
+    @stories        = []
+    @threads        = []
   end
 
   def parse
-    response = Net::HTTP.get_response(URI(url))
-    raise StandardError, "Failed to fetch page content. Response code: #{response.code}" unless response.code == '200'
-
+    response = HTTParty.get(url)
+    raise_url_fetching_error(response)
     doc = Nokogiri::HTML(response.body)
-    story_links = get_story_links(doc)
-    get_stories_info(story_links)
+    story_urls = get_story_urls(doc)
+    get_stories_info(story_urls)
     @threads.each(&:join)
   rescue StandardError => e
     Rails.logger.debug { "Rescued exception: #{e.inspect}" }
@@ -30,15 +28,19 @@ class NewsParsing
 
   private
 
-  def get_story_links(doc)
+  def raise_url_fetching_error(response)
+    raise StandardError, "Failed to fetch page content. Response code: #{response.code}" unless response.code == 200
+  end
+
+  def get_story_urls(doc)
     doc.xpath("//table[1]/tr/td/a[@class='storylink']")
        .map { |story_link| story_link.attributes['href'].to_s }
        .reject { |story_url| link_unfetchable?(story_url) }
   end
 
-  def get_stories_info(story_links)
-    story_links.each do |story_link|
-      get_story_data(story_link)
+  def get_stories_info(story_urls)
+    story_urls.each do |story_url|
+      get_story_data(story_url)
     end
   end
 
@@ -47,6 +49,8 @@ class NewsParsing
       meta_data = fetch_meta_info(story_url)
       raise_meta_api_error(meta_data, story_url)
       story_info = generate_story_data(meta_data, story_url)
+      next if story_info[:title].blank?
+
       @stories << story_info
     rescue StandardError => e
       @failed_stories += 1
@@ -80,12 +84,5 @@ class NewsParsing
       headers: { 'Authorization' => 'Basic ZG9tYW5odGllbjIwMTFAZ21haWwuY29tOmExVk1vMkdJV0JrcTl0M3dmYWhn' },
       query: { 'url' => story_url }
     )
-  end
-
-  def filter_story_content(story_response)
-    Readability::Document.new(story_response.body,
-                              tags: %w[p img],
-                              attributes: %w[src href],
-                              remove_empty_nodes: true)
   end
 end

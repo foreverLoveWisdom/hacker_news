@@ -1,0 +1,12 @@
+- if @story.error
+  .row
+    %div{class: 'article-error'}
+      Something is wrong with the original article. Please try again later.
+- else
+  - if @story.image.present?
+    .row
+      = image_tag(@story.image, class: 'img-fluid')
+    %hr
+  .row
+    = sanitize(@story.content)
+  

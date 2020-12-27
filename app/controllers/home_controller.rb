@@ -2,8 +2,13 @@
 
 # Handle routing request for Home
 class HomeController < ApplicationController
-  def news
-    @news = NewsParsing.new
+  def stories
+    @news = StoriesParsing.new
     @news.parse
+  end
+
+  def story
+    @story = StoryParsing.new(params[:url], params[:image])
+    @story.parse
   end
 end

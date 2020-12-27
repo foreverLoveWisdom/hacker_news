@@ -1,0 +1,15 @@
+- @news.stories.each do |story|
+  .row
+    .col-sm-3
+      - if story[:image].present?
+        = image_tag(story[:image], class: 'img-thumbnail')
+      - else
+        = image_tag('hackernews.png', class: 'img-thumbnail')
+    .col-sm-9
+      .row
+        %div
+          = link_to story[:title], story_path(url: story[:url], image: story[:image]), target: :_blank
+      .row
+        %div
+          = "#{story[:excerpt].split.first(25).join(' ')}..."
+  %hr
