@@ -1,7 +1,7 @@
 %h1 Home#news
 = debug @news.failed_stories
-= debug @news_content
-- @news_content.each do |story|
+= debug @news.stories
+- @news.stories.each do |story|
   .row
     .col-sm-3
       = image_tag(story[:image], class: 'img-thumbnail') if story[:image]

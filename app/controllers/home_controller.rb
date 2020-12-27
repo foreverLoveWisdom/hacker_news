@@ -4,6 +4,6 @@
 class HomeController < ApplicationController
   def news
     @news = NewsParsing.new
-    @news_content = @news.parse
+    @news.parse
   end
 end
