@@ -53,10 +53,14 @@ class StoriesParsing
 
       @stories << story_info
     rescue StandardError => e
-      @failed_stories += 1
-      Rails.logger.debug { "Rescued exception: #{e.inspect}" }
+      rescue_story_error(e)
       next
     end
+  end
+
+  def rescue_story_error(err)
+    @failed_stories += 1
+    Rails.logger.debug { "Rescued exception: #{err.inspect}" }
   end
 
   def raise_meta_api_error(meta_data, story_url)
@@ -78,10 +82,9 @@ class StoriesParsing
   end
 
   def fetch_meta_info(story_url)
-    meta_url = 'https://api.urlmeta.org'
     HTTParty.get(
-      meta_url,
-      headers: { 'Authorization' => 'Basic ZG9tYW5odGllbjIwMTFAZ21haWwuY29tOmExVk1vMkdJV0JrcTl0M3dmYWhn' },
+      Figaro.env.meta_url,
+      headers: { 'Authorization' => Figaro.env.meta_api },
       query: { 'url' => story_url }
     )
   end

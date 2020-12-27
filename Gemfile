@@ -75,6 +75,9 @@ gem 'fastimage', '~> 2.2'
 # Makes http fun! Also, makes consuming restful web services dead easy.
 gem 'httparty', '~> 0.18.1'
 
+# Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
+gem 'figaro', '~> 1.2'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
