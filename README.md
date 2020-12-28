@@ -1,7 +1,7 @@
 * Ruby version: 2.5.3
 * Rails version: 5.2.4.4
 * External API: 
-  *  [URL Meta](https://urlmeta.org/): Faster response comparing with queries directly to original links for getting images and excerpts(**4x faster**: *13* seconds vs *61* seconds)
+  *  [URL Meta](https://urlmeta.org/): Faster response time comparing with queries directly to original links for getting images and excerpts(**4x faster**: *13* seconds vs *61* seconds)
 
 * Implemented features:
   - [x] Parse https://news.ycombinator.com/best to pull down the latest best news.
