@@ -16,10 +16,10 @@ class StoryParsing
     response = HTTParty.get(url)
     raise_url_fetching_error(response)
     story = Readability::Document.new(response.body,
-                                      tags: %w[div p img a],
+                                      tags: %w[div p img a ol ul li h1 h2 h3 h4],
                                       attributes: %w[src href],
 
-                                      remove_empty_nodes: true)
+                                      remove_empty_nodes: false)
     @content = story.content.strip
   rescue StandardError => e
     Rails.logger.debug("Rescued Exception: #{e.inspect}")

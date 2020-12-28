@@ -18,8 +18,7 @@ class StoriesParsing
   def parse
     response = HTTParty.get(url)
     raise_url_fetching_error(response)
-    doc = Nokogiri::HTML(response.body)
-    story_urls = get_story_urls(doc)
+    story_urls = get_story_urls(Nokogiri::HTML(response.body))
     get_stories_info(story_urls)
     @threads.each(&:join)
   rescue StandardError => e

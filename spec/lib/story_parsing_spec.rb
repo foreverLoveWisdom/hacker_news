@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# require_relative '../spec_helper'
 require_relative '../rails_helper'
 require_relative '../../app/lib/story_parsing'
 
@@ -28,12 +27,9 @@ describe StoryParsing do
       let(:story_response) { instance_double(HTTParty::Response, body: story_response_body, code: 200) }
       let(:story_response_body) { '<p>Generates the Comic Mono font files based on Comic Shanns font.</p>' }
 
-      before do
+      it 'returns content' do
         allow(HTTParty).to receive(:get).and_return(story_response)
         story.parse
-      end
-
-      it 'returns content' do
         expect(story.content).to include('Generates the Comic Mono font files based on Comic Shanns font.')
       end
     end
