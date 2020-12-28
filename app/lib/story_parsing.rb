@@ -21,6 +21,8 @@ class StoryParsing
 
                                       remove_empty_nodes: true)
     @content = story.content.strip
+  rescue StandardError => e
+    Rails.logger.debug("Rescued Exception: #{e.inspect}")
   end
 
   private

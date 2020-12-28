@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative '../spec_helper'
-require_relative '../../app/lib/story_parsing'
+require_relative '../rails_helper'
+require_relative '../../app/lib/stories_parsing'
 
 describe StoriesParsing do
   pending
