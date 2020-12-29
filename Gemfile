@@ -78,6 +78,9 @@ gem 'httparty', '~> 0.18.1'
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro', '~> 1.2'
 
+# a code metric tool for rails codes, written in Ruby.
+gem 'rails_best_practices', '~> 1.20'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
